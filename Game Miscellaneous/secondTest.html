@@ -1,0 +1,196 @@
+
+<style>
+  span.one {
+    background-color: #aaa;
+    margin: 0px;
+    padding: 20px;
+  }
+
+  span.two {
+    background-color: #ccc;
+    margin: 0px;
+    padding: 20px;
+  }
+
+  span.three {
+    background-color: #888;
+    margin: 0px;
+    padding: 20px;
+  }
+</style>
+
+
+<body>
+  <div id="map">
+    <span class="one"></span>
+    <span class="two"></span>
+    <span class="three"></span>
+  </div>
+
+<script>
+
+function getZeroArray(height,width)
+{
+    var result = [];
+    for(var i=0; i < height; i++)
+    {
+      result.push(Array(width).fill(0));
+    }
+
+    return result;
+}
+
+function getBlock(config,arr)
+{
+    var height = config.height;
+    var width = config.width;
+
+    
+}
+
+
+function getBestFit(arr,x,y,config)
+{
+
+  var points = [];
+  for(var i = 0; i < config.maxSearchPoints; i++)
+  {
+    points.push(getClosestPointRandomly(arr,x,y,config.map,config.maxSearches,config.clusteringAdjustment));
+  }
+
+  var candidate = 0;
+  var pass = 0;
+
+  while(candidate === 0 && pass < config.noPointTolerance)
+  {
+    pass++;
+    candidate = getCandidate(config.map,points);
+  }
+
+  if(candidate === 0) return newPoint(config.map);
+  else return candidate;
+
+}
+
+function newPoint(map){
+  //console.log("new");
+  var candidate = getRandomArrayElement(map);
+  if(Math.random()*candidate[1] < 1) return candidate[0];
+  else return newPoint(map);
+}
+
+function getCandidate(map,points)
+{
+  var candidate = getRandomArrayElement(points);
+  var result = [];
+  map.forEach(function(innerArr){
+    if(innerArr[0] === candidate)
+      result = innerArr;
+  });
+
+  // this is the rarity check
+  if(Math.random()*result[1] < 1) return candidate;
+  else return 0;
+}
+
+function getRandomArrayElement(points)
+{
+  var index = Math.floor(Math.random()*points.length);
+  return points[index];
+}
+
+function getClosestPointRandomly(arr,x,y,map,maxSearches,clusteringAdjustment)
+{
+  var pass = 0;
+  while(pass < maxSearches)
+  {
+    pass++;
+    var modifier = Math.ceil(Math.pow((pass/(maxSearches/clusteringAdjustment)),2));
+    var randomBitX = Math.floor(Math.random()*2);
+    var randomBitY = Math.floor(Math.random()*2);
+
+    var modifierX = modifier*(randomBitX === 0 ? -1 : 1);
+    var modifierY = modifier*(randomBitY === 0 ? -1 : 1);
+
+    var newX = modifierX + x;
+    var newY = modifierY + y;
+
+    if(newX >= 0 && newY >= 0)
+    {
+      if(arr[newX] !== undefined && arr[newX][newY] !== undefined && arr[newX][newY] !== 0) return arr[newX][newY];
+    }
+  }
+
+  return 0;
+}
+
+function jaggedArrayHasZeros(arr)
+{
+  var hasZeros = false;
+  arr.forEach(function(innerArr){
+    if(innerArr.includes(0)) { hasZeros = true; return; }
+  });
+
+  return hasZeros;
+}
+
+(function(){
+  var config = {
+    // The number of random iterations we allow the map to run to attempt to generate every map cell, once depleted a less random process
+    // will fill in the map gaps
+    maxPasses: 100000,
+
+    // The number of searches we perform to find a point with valid data before giving up,
+    //used to figure out what type of map choice to pick
+    maxSearches: 30,
+
+    // The number of points we gather to make a decision on next terrain type (how much we take other terrain into account)
+    maxSearchPoints: 20,
+
+    // The number of no-matches we will accept from point searching before decididing to create a new terrain type at random:
+    noPointTolerance: 10,
+
+    // The amount of local clustering that occurs
+    clusteringAdjustment: 50,
+
+    blockIterations: 30,
+
+    // width and height of the entire world map
+    width: 20,
+    height: 50,
+
+    // Map types, options that can be chosen to replace 0 default values.  First number is type, second is hoq frequently it should be picked,
+    // Third is an optional array of dependencies on other types (must be near one of those types to be drawn)
+    // Type,Rarity,Clinginess,Dependency
+
+    // Type: just the number we display to the table
+    // Rarity: How frequently should this be picked if the system considers this type,
+      // it is also much more likely to be picked if surrounded by that type
+    // Dependencies, an array of dependencies on other types
+    // water, light grass, heavy grass
+    map: [[1,1],[2,2],[3,10]]
+  };
+
+  var iteration = 0;
+  var arr;
+  while(iteration++ <= config.blockIterations)
+  {
+    console.log('iterate');
+    arr = getBlock(config,arr);
+  }
+
+  var result = arr;
+
+  var html = "";
+  result.forEach(function(innerArr){
+    innerArr.forEach(function(n){
+      var cls = n == 1 ? "one" : n == 2 ? "two" : "three";
+      html += '<span class="' + cls + '"></span>';
+    });
+    html+='<br/>';
+  });
+  document.getElementById("map").innerHTML = html;
+
+})();
+</script>
+</body>
