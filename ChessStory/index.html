@@ -1,0 +1,135 @@
+<html>
+
+<head>
+    <style>
+        body {
+            background: linear-gradient(141deg, #eee 0%, #cccccc 51%, #8b8b8b 75%)
+        }
+
+        canvas {
+            border-radius: 0.5em;
+        }
+
+        .typewriter h1 {
+            overflow: hidden;
+            /* Ensures the content is not revealed until the animation */
+
+            /* The typwriter cursor */
+            white-space: nowrap;
+            /* Keeps the content on a single line */
+            margin: 0 auto;
+            /* Gives that scrolling effect as the typing happens */
+            letter-spacing: .15em;
+            /* Adjust as needed */
+            animation:
+                typing 3.5s steps(40, end),
+                blink-caret .75s step-end infinite;
+        }
+
+        /* The typing effect */
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        .myButton {
+            background-color: #eee;
+            border-radius: 5px;
+            border: 2px solid #bbb;
+            display: inline-block;
+            cursor: pointer;
+            color: #333;
+            letter-spacing: .15em;
+            padding: 7px 15px;
+            text-decoration: none;
+            text-align: center;
+            width: 80px;
+            margin: 2px;
+        }
+
+        .myButton:hover {
+            background-color: #f5f5f5;
+        }
+
+        .myButton:active {
+            position: relative;
+            top: 1px;
+        }
+
+        .terminal {
+
+            margin-left:5px;
+            border: 1px solid #555;
+            opacity: 0.7;
+            height: 65%;
+            background-color:#ddd;
+            border-radius:10px;
+            padding: 20px;
+            letter-spacing: .08em;
+            font-size:16px;
+        }
+
+        .disabled {
+
+            opacity:0.40;
+
+        }
+
+
+
+    </style>
+</head>
+
+<body>
+
+    <main style="max-width:1000">
+        <div class="typewriter", style="width:500px">
+            <h1>Story Writer.<div style="font-size:10pt">By Nathan Hoffman</div>
+            </h1>
+        </div>
+        <div>
+            <canvas style="width:40%" id="chess-board"></canvas>
+            <span style="float:right; width:60%;">
+                <div class="terminal">
+                    > This is a test Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et nunc commodo, ornare orci in, venenatis sapien. Vestibulum id commodo quam. Sed quis nunc in ligula mattis efficitur nec sed justo. Proin non mi consectetur justo venenatis tempor eu venenatis lorem. Suspendisse potenti. Duis in nisi eu sapien facilisis ultricies. Aenean dapibus lectus odio, vel sagittis odio cursus a. Cras vitae pretium velit, in eleifend dui. Donec bibendum tellus sit amet scelerisque consectetur. Nunc vitae mauris quis nibh rutrum pulvinar. Cras purus dui, maximus vitae vestibulum quis, pharetra at magna. Phasellus ac varius tellus. Suspendisse purus diam, maximus sit amet ultrices in, lacinia sit amet nibh. Nullam sit amet erat efficitur, elementum nisi feugiat, dapibus nisi.
+                    <br/>> <b>You have three options:</b> 
+                </div>
+            </span>
+        </div>
+        <div style="text-align: center;">
+                <br/>
+
+                <a href="" style="width:30px;height:30px;" class="myButton">&#9650; N</a><br />
+                <a href="" style="width:30px;height:30px;" class="myButton">&#9668; W</a>
+                <a href="" style="width:30px;height:30px;" class="myButton">&#9658; E</a><br />
+                <a href="" style="width:30px;height:30px;" class="myButton">&#9660; S</a>
+                
+                <br/>
+                <br/>
+
+                <a href="" style="width:10px" class="myButton disabled">1</a>
+                <a href="" style="width:10px" class="myButton">2</a>
+                <a href="" style="width:10px" class="myButton">3</a>
+                <a href="" style="width:10px" class="myButton">4</a>
+                
+                <br/>
+                <br/>
+
+                <a href="" class="myButton">Take</a>
+                <a href="" class="myButton">Interact</a>
+                <a href="" class="myButton">Examine</a>
+        </div>
+    </main>
+
+    <script src="index.js"></script>
+
+
+
+</body>
+
+</html>
